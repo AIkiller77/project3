@@ -130,12 +130,9 @@ project/
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgements
 
 - [Tetris Guideline](https://tetris.wiki/Tetris_Guideline)
 - [Snake Game Genre](https://en.wikipedia.org/wiki/Snake_%28video_game_genre%29)
 - [Flask Documentation](https://flask.palletsprojects.com/)
+- used vibe coding
