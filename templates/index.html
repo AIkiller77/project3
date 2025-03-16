@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Game AI Platform - Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron py-5">
+    <h1 class="display-4">Welcome to the Game AI Platform</h1>
+    <p class="lead">Play classic games against AI opponents trained with reinforcement learning.</p>
+    <hr class="my-4">
+    <p>Challenge yourself against AI agents at different difficulty levels and see how you rank on our leaderboards.</p>
+    {% if not current_user.is_authenticated %}
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg me-2" href="{{ url_for('register') }}" role="button">Sign Up</a>
+        <a class="btn btn-outline-primary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+    </div>
+    {% else %}
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg me-2" href="{{ url_for('play_game', game_type='tetris') }}" role="button">Play Tetris</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('play_game', game_type='snake') }}" role="button">Play Snake</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Tetris</h3>
+            </div>
+            <div class="card-body">
+                <p>Challenge yourself in the classic game of Tetris. Arrange falling tetrominoes to create complete rows and score points.</p>
+                <ul>
+                    <li>Play against AI opponents trained with reinforcement learning</li>
+                    <li>Choose from multiple difficulty levels</li>
+                    <li>Track your scores and progress</li>
+                </ul>
+                <a href="{{ url_for('play_game', game_type='tetris') if current_user.is_authenticated else url_for('login') }}" class="btn btn-primary">Play Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Snake</h3>
+            </div>
+            <div class="card-body">
+                <p>Navigate your snake to collect food and grow longer without hitting walls or yourself.</p>
+                <ul>
+                    <li>Compete against AI snakes with different strategies</li>
+                    <li>Select your preferred difficulty level</li>
+                    <li>Compare your performance with other players</li>
+                </ul>
+                <a href="{{ url_for('play_game', game_type='snake') if current_user.is_authenticated else url_for('login') }}" class="btn btn-primary">Play Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>About Our AI</h3>
+            </div>
+            <div class="card-body">
+                <p>Our AI agents are built using Deep Q-Network (DQN), a reinforcement learning algorithm that allows them to learn optimal strategies through experience.</p>
+                <p>The AI agents are trained on both predefined strategies and real player data, allowing them to adapt and improve over time.</p>
+                <p>By playing against our AI, you're not only challenging yourself but also helping to improve the AI through your gameplay data.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

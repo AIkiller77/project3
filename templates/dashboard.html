@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Game AI Platform - Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Your Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Tetris Stats</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <h4>{{ tetris_stats.games_played }}</h4>
+                        <p>Games Played</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h4>{{ tetris_stats.high_score }}</h4>
+                        <p>High Score</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h4>{{ tetris_stats.average_score|round|int }}</h4>
+                        <p>Average Score</p>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('play_game', game_type='tetris') }}" class="btn btn-primary">Play Tetris</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Snake Stats</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <h4>{{ snake_stats.games_played }}</h4>
+                        <p>Games Played</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h4>{{ snake_stats.high_score }}</h4>
+                        <p>High Score</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <h4>{{ snake_stats.average_score|round|int }}</h4>
+                        <p>Average Score</p>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('play_game', game_type='snake') }}" class="btn btn-primary">Play Snake</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Recent Games</h3>
+            </div>
+            <div class="card-body">
+                {% if user_games %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Score</th>
+                                <th>AI Level</th>
+                                <th>Date Played</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in user_games %}
+                            <tr>
+                                <td>{{ game.game_type|capitalize }}</td>
+                                <td>{{ game.score }}</td>
+                                <td>{{ game.ai_level }}</td>
+                                <td>{{ game.date_played.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">You haven't played any games yet. Start playing now!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>AI Performance</h3>
+            </div>
+            <div class="card-body">
+                {% if ai_performance %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Difficulty Level</th>
+                                <th>Average Score</th>
+                                <th>Games Played</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ai in ai_performance %}
+                            <tr>
+                                <td>{{ ai.game_type|capitalize }}</td>
+                                <td>{{ ai.difficulty_level }}</td>
+                                <td>{{ ai.average_score|round(2) }}</td>
+                                <td>{{ ai.games_played }}</td>
+                                <td>{{ ai.last_updated.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No AI performance data available yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

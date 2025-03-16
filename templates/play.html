@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Game AI Platform - Play {{ game_type|capitalize }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #game-canvas {
+        border: 2px solid #333;
+        background-color: #f0f0f0;
+        margin: 20px 0;
+    }
+    
+    .game-controls {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .game-info {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+    }
+    
+    .info-box {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    .keyboard-controls {
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 5px;
+        max-width: 600px;
+    }
+    
+    .keyboard-controls table {
+        margin: 0 auto;
+    }
+    
+    .keyboard-controls td {
+        padding: 5px 10px;
+    }
+    
+    .key {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #e9e9e9;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        min-width: 30px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">Play {{ game_type|capitalize }}</h1>
+        
+        <div class="game-controls">
+            <div class="form-group mb-3">
+                <label for="ai-level" class="form-label">AI Difficulty Level:</label>
+                <select id="ai-level" class="form-select" style="max-width: 200px; margin: 0 auto;">
+                    {% for level in ai_levels %}
+                    <option value="{{ level }}">Level {{ level }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button id="start-game" class="btn btn-primary me-2">Start Game</button>
+            <button id="pause-game" class="btn btn-secondary me-2" disabled>Pause</button>
+            <button id="reset-game" class="btn btn-danger" disabled>Reset</button>
+        </div>
+        
+        <div class="game-info">
+            <div class="info-box">
+                <h5>Score</h5>
+                <div id="score">0</div>
+            </div>
+            <div class="info-box">
+                <h5>Level</h5>
+                <div id="level">1</div>
+            </div>
+            {% if game_type == 'tetris' %}
+            <div class="info-box">
+                <h5>Lines</h5>
+                <div id="lines">0</div>
+            </div>
+            {% elif game_type == 'snake' %}
+            <div class="info-box">
+                <h5>Length</h5>
+                <div id="length">1</div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="game-container">
+            <canvas id="game-canvas" width="400" height="600"></canvas>
+            
+            <div class="keyboard-controls">
+                <h5>Keyboard Controls:</h5>
+                {% if game_type == 'tetris' %}
+                <table>
+                    <tr>
+                        <td>Move Left:</td>
+                        <td><span class="key">←</span> or <span class="key">A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Move Right:</td>
+                        <td><span class="key">→</span> or <span class="key">D</span></td>
+                    </tr>
+                    <tr>
+                        <td>Rotate:</td>
+                        <td><span class="key">↑</span> or <span class="key">W</span></td>
+                    </tr>
+                    <tr>
+                        <td>Soft Drop:</td>
+                        <td><span class="key">↓</span> or <span class="key">S</span></td>
+                    </tr>
+                    <tr>
+                        <td>Hard Drop:</td>
+                        <td><span class="key">Space</span></td>
+                    </tr>
+                </table>
+                {% elif game_type == 'snake' %}
+                <table>
+                    <tr>
+                        <td>Move Left:</td>
+                        <td><span class="key">←</span> or <span class="key">A</span></td>
+                    </tr>
+                    <tr>
+                        <td>Move Right:</td>
+                        <td><span class="key">→</span> or <span class="key">D</span></td>
+                    </tr>
+                    <tr>
+                        <td>Move Up:</td>
+                        <td><span class="key">↑</span> or <span class="key">W</span></td>
+                    </tr>
+                    <tr>
+                        <td>Move Down:</td>
+                        <td><span class="key">↓</span> or <span class="key">S</span></td>
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Game configuration variables -->
+<script>
+    // Game configuration
+    const gameType = "{{ game_type }}";
+    const userId = "{{ current_user.id }}";
+    console.log("Game configuration loaded for:", gameType);
+</script>
+
+<!-- Load the appropriate game script based on game type -->
+{% if game_type == 'tetris' %}
+<script src="{{ url_for('static', filename='js/tetris.js') }}"></script>
+{% elif game_type == 'snake' %}
+<script src="{{ url_for('static', filename='js/snake.js') }}"></script>
+{% endif %}
+{% endblock %}

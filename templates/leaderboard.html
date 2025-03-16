@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Game AI Platform - Leaderboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Leaderboard</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Tetris Top Scores</h3>
+            </div>
+            <div class="card-body">
+                {% if tetris_leaders %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i, (username, score) in enumerate(tetris_leaders) %}
+                            <tr>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ username }}</td>
+                                <td>{{ score }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No Tetris scores recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Snake Top Scores</h3>
+            </div>
+            <div class="card-body">
+                {% if snake_leaders %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i, (username, score) in enumerate(snake_leaders) %}
+                            <tr>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ username }}</td>
+                                <td>{{ score }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No Snake scores recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4>Think you can do better?</h4>
+                <p>Challenge yourself against our AI and climb the leaderboard!</p>
+                <div class="mt-3">
+                    <a class="btn btn-primary me-2" href="{{ url_for('play_game', game_type='tetris') if current_user.is_authenticated else url_for('login') }}">Play Tetris</a>
+                    <a class="btn btn-primary" href="{{ url_for('play_game', game_type='snake') if current_user.is_authenticated else url_for('login') }}">Play Snake</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
